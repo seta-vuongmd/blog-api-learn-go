@@ -35,6 +35,19 @@ func CreatePost(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
+	// Index to Elasticsearch after successful DB save
+	go func(p models.Post) {
+		doc := map[string]interface{}{
+			"id":      p.ID,
+			"title":   p.Title,
+			"content": p.Content,
+			"tags":    p.Tags,
+		}
+		jsonDoc, _ := json.Marshal(doc)
+		config.ESClient.Index("posts", bytes.NewReader(jsonDoc))
+	}(post)
+
 	c.JSON(http.StatusOK, post)
 }
 
