@@ -33,14 +33,26 @@ curl -X POST http://localhost:8080/login -H "Content-Type: application/json" -d 
 # Tạo bài viết
 curl -X POST http://localhost:8080/posts -H "Content-Type: application/json" -d '{"title":"Tiêu đề","content":"Nội dung","tags":["go","api"],"user_id":1}'
 
+# Lấy danh sách bài viết
+curl http://localhost:8080/posts
+
 # Lấy chi tiết bài viết
 curl http://localhost:8080/posts/1
+
+# Cập nhật bài viết
+curl -X PUT http://localhost:8080/posts/1 -H "Content-Type: application/json" -d '{"title":"Tiêu đề mới","content":"Nội dung mới","tags":["go","update"],"user_id":1}'
+
+# Xóa bài viết
+curl -X DELETE http://localhost:8080/posts/1
 
 # Tìm kiếm theo tag
 curl http://localhost:8080/posts/search-by-tag?tag=go
 
 # Tìm kiếm full-text
 curl http://localhost:8080/posts/search?q=Tiêu đề
+
+# Lấy bài viết liên quan
+curl http://localhost:8080/posts/1/related
 ```
 
 ## Ghi chú

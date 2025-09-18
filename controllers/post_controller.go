@@ -12,18 +12,7 @@ import (
 )
 
 func CreatePost(c *gin.Context) {
-	// ...existing code...
-	// Index to Elasticsearch
 	var post models.Post
-	go func(post models.Post) {
-		doc := map[string]interface{}{
-			"id":      post.ID,
-			"title":   post.Title,
-			"content": post.Content,
-		}
-		jsonDoc, _ := json.Marshal(doc)
-		config.ESClient.Index("posts", bytes.NewReader(jsonDoc))
-	}(post)
 	if err := c.ShouldBindJSON(&post); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
